@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧日照中心 - 實境模擬參訪系統</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <style>
+        body { margin: 0; font-family: "Microsoft JhengHei", sans-serif; }
+        #panorama { width: 100vw; height: 100vh; }
+        #title-overlay {
+            position: absolute; top: 20px; left: 20px; z-index: 10;
+            background: rgba(0, 0, 0, 0.75); color: white; padding: 15px 20px; border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        #title-overlay h2 { margin: 0 0 5px 0; font-size: 1.2rem; }
+        #title-overlay p { margin: 0; font-size: 0.9rem; color: #ccc; }
+    </style>
+</head>
+<body>
+
+    <div id="title-overlay">
+        <h2>日照中心虛擬參訪系統</h2>
+        <p>💡 提示：點擊畫面中的場景按鈕可自由穿梭各個區域</p>
+    </div>
+
+    <div id="panorama"></div>
+
+    <script>
+    pannellum.viewer('panorama', {
+        "default": {
+            "firstScene": "entrance", // 預設從大門口開始
+            "author": "智慧場域專題",
+            "autoLoad": true,
+            "compass": true
+        },
+
+        "scenes": {
+            /* --- 1. 大門口 / 櫃檯區 --- */
+            "entrance": {
+                "title": "大門口與櫃檯區",
+                "type": "equirectangular",
+                "panorama": "櫃台.jpg", // 請確保檔名正確
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 90, "type": "scene", "text": "前往：鞋櫃區", "sceneId": "shoes" }
+                ]
+            },
+
+            /* --- 2. 鞋櫃區 --- */
+            "shoes": {
+                "title": "鞋櫃區",
+                "type": "equirectangular",
+                "panorama": "櫃台.jpg", // 修正原先重複指向櫃台的問題，請換成對應圖片
+                "hotSpots": [
+                    { "pitch": 0, "yaw": -90, "type": "scene", "text": "返回：大門口", "sceneId": "entrance" },
+                    { "pitch": 0, "yaw": 0, "type": "scene", "text": "前往：活動區(開放區域)", "sceneId": "activity" }
+                ]
+            },
+
+            /* --- 3. 活動區 (開放區域) --- */
+            "activity": {
+                "title": "活動區",
+                "type": "equirectangular",
+                "panorama": "活動區.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 180, "type": "scene", "text": "返回：鞋櫃區", "sceneId": "shoes" },
+                    { "pitch": 0, "yaw": -90, "type": "scene", "text": "前往：單元一", "sceneId": "unit1" },
+                    { "pitch": 0, "yaw": 90, "type": "scene", "text": "前往：開放式廚房", "sceneId": "kitchen" }
+                ]
+            },
+
+            /* --- 4. 單元一 (平安家) --- */
+            "unit1": {
+                "title": "單元一",
+                "type": "equirectangular",
+                "panorama": "平安家.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 90, "type": "scene", "text": "返回：活動區", "sceneId": "activity" },
+                    { "pitch": 0, "yaw": 0, "type": "scene", "text": "前往：單元二", "sceneId": "unit2" }
+                ]
+            },
+
+            /* --- 5. 單元二 (快樂家) --- */
+            "unit2": {
+                "title": "單元二",
+                "type": "equirectangular",
+                "panorama": "快樂家.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 180, "type": "scene", "text": "返回：單元一", "sceneId": "unit1" },
+                    { "pitch": 0, "yaw": 0, "type": "scene", "text": "前往：單元三", "sceneId": "unit3" }
+                ]
+            },
+
+            /* --- 6. 單元三 (圓滿家) --- */
+            "unit3": {
+                "title": "單元三",
+                "type": "equirectangular",
+                "panorama": "圓滿家.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 180, "type": "scene", "text": "返回：單元二", "sceneId": "unit2" },
+                    { "pitch": 0, "yaw": -90, "type": "scene", "text": "前往：上課區 / 走廊", "sceneId": "classroom" }
+                ]
+            },
+
+            /* --- 7. 上課區 --- */
+            "classroom": {
+                "title": "上課區",
+                "type": "equirectangular",
+                "panorama": "上課區.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 90, "type": "scene", "text": "返回：單元三", "sceneId": "unit3" },
+                    { "pitch": 0, "yaw": -90, "type": "scene", "text": "前往：廁所區", "sceneId": "toilet" }
+                ]
+            },
+
+
+            /* --- 8. 廁所區 (整合無障礙與男女廁) --- */
+            "toilet": {
+                "title": "廁所區",
+                "type": "equirectangular",
+                "panorama": "toilet1.jpg",
+                "hotSpots": [
+                    { "pitch": 0, "yaw": 90, "type": "scene", "text": "返回：上課區", "sceneId": "classroom" }
+                ]
+            }
+        }
+    });
+    </script>
+
+</body>
+</html>
